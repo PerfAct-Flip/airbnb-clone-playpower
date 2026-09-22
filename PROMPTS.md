@@ -131,6 +131,22 @@ long, verbatim where short.
     missing `aria-label` (`"<title> image N"`) to each photo button, matching
     the reference's own pattern, since the originally built buttons had none.
 
+17. **Exact spec for the Photo Tour header**: shared directly again — real
+    markup and CSS for `_TCWfOg` (`flex-shrink: 0; height: 88px; padding: 0
+    32px`). Two kinds of fixes: cosmetic (88px not 64px, 32px padding not
+    24px, no border) and structural — `flex-shrink: 0` implies the header is
+    a fixed-height flex item in a flex-column layout, not a
+    `position: sticky` element inside one big scrolling container, which is
+    what had been built. Restructured the dialog root to `flex flex-col` with
+    the header as a non-shrinking child and a separate `flex-1
+    overflow-y-auto` content div, verified by scrolling the container and
+    confirming the header stays fixed. Also corrected the back button from an
+    arrow icon to the reference's actual chevron, its aria-label from "Close
+    photo tour" to "Back", the heading from `<h1>` to `<h2>`, and centered
+    "Photo tour" is now flanked by the same 40px circular icon-button style
+    already established for the Lightbox, instead of a slightly different
+    ad-hoc size.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

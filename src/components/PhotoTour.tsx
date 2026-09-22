@@ -2,9 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ArrowLeft, Share, Heart } from "lucide-react";
+import { ChevronLeft, Share, Heart } from "lucide-react";
 import { listing, roomSections } from "@/lib/listing-data";
 import { useFocusTrap } from "@/lib/use-focus-trap";
+
+// Shared 40px circular icon-button style, matching the reference's `_bNHEUf`
+// class (reused for the Lightbox's close/nav buttons too).
+const ICON_BUTTON =
+  "w-10 h-10 rounded-full inline-flex items-center justify-center hover:bg-[var(--color-bg-subtle)] transition-colors";
 
 export function PhotoTour({
   onClose,
@@ -42,40 +47,37 @@ export function PhotoTour({
       role="dialog"
       aria-modal="true"
       aria-label="Photo tour"
-      className="fixed inset-0 z-50 bg-white overflow-y-auto"
+      className="fixed inset-0 z-50 bg-white flex flex-col"
     >
-      <div className="sticky top-0 bg-white z-10 border-b border-[var(--color-border-light)]">
-        <div className="max-w-[900px] mx-auto flex items-center justify-between px-6 h-16">
-          <button
-            ref={closeBtnRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close photo tour"
-            className="p-2 rounded-full hover:bg-[var(--color-bg-subtle)]"
-          >
-            <ArrowLeft size={20} />
+      {/* Header is a non-shrinking flex item at a fixed 88px height, not a
+          `position: sticky` element inside the scroll container — matches
+          the reference's own `_TCWfOg { flex-shrink: 0; height: 88px; ... }`
+          structurally, not just visually */}
+      <header
+        id="tourBar"
+        className="shrink-0 z-[5] h-[88px] flex items-center px-8 bg-white"
+      >
+        <button
+          ref={closeBtnRef}
+          type="button"
+          onClick={onClose}
+          aria-label="Back"
+          className={ICON_BUTTON}
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <h2 className="flex-1 text-center font-medium">Photo tour</h2>
+        <div className="flex items-center gap-2">
+          <button type="button" aria-label="Share" className={ICON_BUTTON}>
+            <Share size={18} />
           </button>
-          <h1 className="font-medium">Photo tour</h1>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              aria-label="Share"
-              className="p-2 rounded-full hover:bg-[var(--color-bg-subtle)]"
-            >
-              <Share size={18} />
-            </button>
-            <button
-              type="button"
-              aria-label="Save"
-              className="p-2 rounded-full hover:bg-[var(--color-bg-subtle)]"
-            >
-              <Heart size={18} />
-            </button>
-          </div>
+          <button type="button" aria-label="Save" className={ICON_BUTTON}>
+            <Heart size={18} />
+          </button>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-[900px] mx-auto px-6 py-8">
+      <div className="flex-1 overflow-y-auto max-w-[900px] w-full mx-auto px-6 py-8">
         {/* Thumbnail nav grid — 8 columns, matching the reference's own
             `._tHVclZ { grid-template-columns: repeat(8, 1fr); gap: 12px;
             margin-bottom: 40px; }` exactly, not a guessed 4-column layout */}
