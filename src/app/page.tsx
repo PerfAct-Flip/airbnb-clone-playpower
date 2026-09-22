@@ -39,7 +39,14 @@ export default function Home() {
 
         <Tabs />
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-16 mt-2">
+        {/* Two-column layout with the sticky booking sidebar ends here —
+            it only spans Host/Highlights/Description/Sleeping/Amenities.
+            Reviews, Location, Things to know, and Similar listings are
+            full-width sections below with no sidebar alongside them,
+            matching the reference's real behavior (the booking card's
+            sticky column visibly ends before the Reviews section, not at
+            the bottom of the page). */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_372px] gap-x-24 gap-y-2 items-stretch">
           <div>
             <div className="pb-6">
               <h2 className="text-xl font-medium">{listing.subtitle}</h2>
@@ -59,17 +66,17 @@ export default function Home() {
             <Description />
             <SleepingArrangements />
             <Amenities />
-            <Reviews />
-            <div id="location">
-              <LocationMap />
-            </div>
-            <ThingsToKnow />
           </div>
           <div>
             <BookingCard />
           </div>
         </div>
 
+        <Reviews />
+        <div id="location">
+          <LocationMap />
+        </div>
+        <ThingsToKnow />
         <SimilarListings />
       </main>
 

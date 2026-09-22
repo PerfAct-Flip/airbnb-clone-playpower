@@ -186,6 +186,33 @@ long, verbatim where short.
     reference's actual custom icon set, which isn't something we have
     access to — same category of limitation as the stock photos.
 
+21. **Sticky booking sidebar scoped incorrectly, caught by direct
+    observation of the reference (not a CSS snippet).** The developer
+    pointed out that in the reference, the booking sidebar's sticky column
+    visibly ends *before* the Reviews section — it doesn't stick all the
+    way to the bottom of the page like the version we'd built. Root cause:
+    Reviews, Location, Things to know, and Similar listings were nested
+    inside the same two-column grid as the sticky sidebar, giving it far
+    more scroll room than the reference intends. Restructured so the
+    two-column grid (with the sticky sidebar) only wraps
+    Host/Highlights/Description/Sleeping-arrangements/Amenities; the four
+    sections after that are now full-width, outside the grid, with no
+    sidebar alongside them. Verified by scrolling to just above the Reviews
+    section and confirming the sidebar (specifically its last element,
+    "Report this listing") had already detached.
+
+22. **Rating-breakdown columns, exact CSS shared directly**
+    (`._ygNjbZ { padding: 0 24px }`, `._ygNjbZ+._ygNjbZ { border-left: 1px
+    solid var(--line) }`, label 14px/500, icon 32px, value 18px/500).
+    Rebuilt the six-metric breakdown from a flex-wrap of "label value icon"
+    rows into a 7-column grid (Overall rating + 6 metrics) with vertical
+    dividers between columns, each metric showing label → 32px icon → value
+    stacked. Honest gap: we don't have a legitimate source for the exact
+    column-width ratio or the precise label/icon/value ordering inside each
+    cell (only the individual class rules, not the full markup), so equal
+    7-way columns and a label-icon-value stack are our own reasonable
+    engineering call, not a copied value.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

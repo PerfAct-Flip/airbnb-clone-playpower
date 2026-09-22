@@ -27,36 +27,42 @@ export function Reviews() {
         </a>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-x-6 gap-y-8 mt-10">
-        <div className="w-full md:w-36 shrink-0 space-y-1">
-          <p className="text-sm font-medium mb-2">Overall rating</p>
-          {listing.ratingDistribution.map((row) => (
-            <div key={row.stars} className="flex items-center gap-3 text-xs">
-              <span className="w-2 text-[var(--color-text-secondary)]">
-                {row.stars}
-              </span>
-              <div className="flex-1 h-1 rounded-full bg-[var(--color-border-light)] overflow-hidden">
-                <div
-                  className="h-full bg-[var(--color-text)]"
-                  style={{ width: `${row.pct}%` }}
-                />
+      {/* Each column's spacing/border matches the reference's real
+          `._ygNjbZ` rule exactly (padding: 0 24px; border-left between
+          adjacent columns; label 14px/500, icon 32px, value 18px/500) —
+          the overall column-count/ratio isn't something we have a
+          legitimate source for, so equal-width columns is our own
+          reasonable call, not a copied value. */}
+      <div className="grid grid-cols-7 mt-10">
+        <div className="px-6">
+          <p className="text-sm font-medium mb-3">Overall rating</p>
+          <div className="space-y-1">
+            {listing.ratingDistribution.map((row) => (
+              <div key={row.stars} className="flex items-center gap-3 text-xs">
+                <span className="w-2 text-[var(--color-text-secondary)]">
+                  {row.stars}
+                </span>
+                <div className="flex-1 h-1 rounded-full bg-[var(--color-border-light)] overflow-hidden">
+                  <div
+                    className="h-full bg-[var(--color-text)]"
+                    style={{ width: `${row.pct}%` }}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="flex flex-wrap gap-x-4 gap-y-4 flex-1">
-          {listing.reviewBreakdown.map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center gap-1.5 whitespace-nowrap flex-1 min-w-[165px]"
-            >
-              <span className="text-sm">{item.label}</span>
-              <span className="text-sm font-medium">{item.value}</span>
-              <Icon name={item.icon} size={14} />
-            </div>
-          ))}
-        </div>
+        {listing.reviewBreakdown.map((item) => (
+          <div
+            key={item.label}
+            className="px-6 border-l border-[var(--color-border)]"
+          >
+            <p className="text-sm font-medium mb-3">{item.label}</p>
+            <Icon name={item.icon} size={32} className="text-[var(--color-text)] mb-2" />
+            <p className="text-lg font-medium">{item.value}</p>
+          </div>
+        ))}
       </div>
 
       <div className="flex gap-3 overflow-x-auto mt-8 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
