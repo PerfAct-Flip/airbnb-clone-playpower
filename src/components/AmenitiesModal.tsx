@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { listing } from "@/lib/listing-data";
 import { useFocusTrap } from "@/lib/use-focus-trap";
+import { AmenityIcon } from "@/lib/icon-map";
 
 export function AmenitiesModal({ onClose }: { onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -49,19 +50,24 @@ export function AmenitiesModal({ onClose }: { onClose: () => void }) {
           {listing.amenityCategories.map((cat) => (
             <div key={cat.title} className="mb-8">
               <h3 className="font-medium mb-4">{cat.title}</h3>
-              <div className="space-y-4">
+              <div>
                 {cat.items.map((item) => (
-                  <div key={item} className="text-[15px]">
-                    {item}
+                  <div
+                    key={item}
+                    className="flex items-center gap-4 text-base py-4 border-b border-[var(--color-border-light)] last:border-b-0"
+                  >
+                    <AmenityIcon label={item} size={24} className="shrink-0" />
+                    <span>{item}</span>
                   </div>
                 ))}
                 {"unavailable" in cat &&
                   cat.unavailable?.map((item) => (
                     <div
                       key={item}
-                      className="text-[15px] text-[var(--color-text-secondary)] line-through decoration-1"
+                      className="flex items-center gap-4 text-base py-4 border-b border-[var(--color-border-light)] last:border-b-0 text-[var(--color-text-secondary)]"
                     >
-                      {item}
+                      <AmenityIcon label={item} size={24} className="shrink-0 opacity-60" />
+                      <span className="line-through decoration-1">{item}</span>
                     </div>
                   ))}
               </div>

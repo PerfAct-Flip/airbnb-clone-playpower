@@ -174,6 +174,18 @@ long, verbatim where short.
     only expanded and never collapsed back — made it a real two-way toggle
     ("Show more" / "Show less") with a rotating chevron.
 
+20. **Amenities modal rows, exact CSS + markup shared directly**
+    (`._gmngIQ { display: flex; gap: 16px; font-size: 16px; padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft); }`, with an icon + label
+    structure). The modal previously listed amenities as plain text with no
+    icons and no dividers at all. Added a label-based icon lookup
+    (`AmenityIcon` in `icon-map.tsx`) covering every amenity name across all
+    ten categories, and the border-bottom/padding/gap spacing exactly.
+    Honest limitation: the icon *glyphs* are lucide-react's closest
+    semantic equivalents (e.g. a generic droplet for "Shower gel"), not the
+    reference's actual custom icon set, which isn't something we have
+    access to — same category of limitation as the stock photos.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
