@@ -12,7 +12,7 @@ export function Amenities() {
 
   return (
     <div className="py-6 border-b border-[var(--color-border-light)]" id="amenities">
-      <h2 className="text-xl font-medium mb-4">What this place offers</h2>
+      <h2 className="text-[26px] leading-[30px] font-medium mb-4">What this place offers</h2>
       <div className="grid grid-cols-2 gap-y-4">
         {visible.map((a) => (
           <div key={a.label} className="flex items-center gap-4">

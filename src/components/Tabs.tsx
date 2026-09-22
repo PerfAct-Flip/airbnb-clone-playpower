@@ -62,7 +62,8 @@ export function Tabs() {
           </p>
           <button
             type="button"
-            className="rounded-lg px-5 py-2.5 font-semibold text-sm text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:opacity-90 transition-opacity"
+            className="rounded-lg px-5 py-2.5 font-semibold text-sm text-white transition-[background] hover:[background:var(--color-reserve-gradient-hover)]"
+            style={{ background: "var(--color-reserve-gradient)" }}
           >
             Reserve
           </button>

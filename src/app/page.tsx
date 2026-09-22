@@ -25,7 +25,7 @@ export default function Home() {
     <>
       <Header />
 
-      <main className="mx-auto max-w-[1120px] px-6 pb-24" id="photos">
+      <main className="mx-auto max-w-[1280px] px-6 pb-24" id="photos">
         <PhotoGrid onShowAll={() => setTourOpen(true)} />
         <TitleRow title={listing.title} />
         <GuestFavouriteBanner

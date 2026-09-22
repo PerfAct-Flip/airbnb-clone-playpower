@@ -167,7 +167,8 @@ export function BookingCard() {
 
         <button
           type="button"
-          className="w-full mt-4 rounded-xl py-3.5 font-semibold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:opacity-90 transition-opacity"
+          className="w-full mt-4 rounded-xl py-3.5 font-semibold text-white transition-[background] hover:[background:var(--color-reserve-gradient-hover)]"
+          style={{ background: "var(--color-reserve-gradient)" }}
         >
           Reserve
         </button>

@@ -49,7 +49,7 @@ export function Reviews() {
           {listing.reviewBreakdown.map((item) => (
             <div
               key={item.label}
-              className="flex items-center gap-1.5 whitespace-nowrap flex-1 min-w-[140px]"
+              className="flex items-center gap-1.5 whitespace-nowrap flex-1 min-w-[165px]"
             >
               <span className="text-sm">{item.label}</span>
               <span className="text-sm font-medium">{item.value}</span>

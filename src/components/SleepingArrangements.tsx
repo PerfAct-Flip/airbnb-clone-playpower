@@ -9,7 +9,7 @@ export function SleepingArrangements() {
 
   return (
     <div className="py-6 border-b border-[var(--color-border-light)]">
-      <h2 className="text-xl font-medium mb-4">Where you&apos;ll sleep</h2>
+      <h2 className="text-[26px] leading-[30px] font-medium mb-4">Where you&apos;ll sleep</h2>
       <div className="grid grid-cols-2 gap-4 max-w-[520px]">
         {rooms.map((room) => (
           <div key={room.room}>

@@ -11,7 +11,7 @@ import { Search, Plus, Minus, Home } from "lucide-react";
 export function LocationMap() {
   return (
     <div className="py-10">
-      <h2 className="text-xl font-medium mb-1">Where you&apos;ll be</h2>
+      <h2 className="text-[26px] leading-[30px] font-medium mb-1">Where you&apos;ll be</h2>
       <p className="text-[15px] mb-6">Candolim, Goa, India</p>
 
       <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden border border-[var(--color-border-light)] bg-[#eef1ec]">

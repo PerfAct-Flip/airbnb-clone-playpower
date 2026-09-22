@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Grid2x2 } from "lucide-react";
 import { allPhotos } from "@/lib/listing-data";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 
 /**
- * NOTE: built without a reference screenshot of the real Lightbox (not yet
- * shared). Structure follows Airbnb's general pattern — light overlay,
- * centered contained image, circular prev/next controls, counter — but
- * exact spacing/animation should be diffed against the real thing once
- * that screenshot is available.
+ * Matches the reference's real Lightbox markup/CSS, extracted via a saved
+ * DOM snapshot (#lightbox, #lbPrev/#lbNext/#lbClose/#lbGrid/#lbCounter) and
+ * its embedded stylesheet — not guessed. Key specifics reproduced here:
+ * absolute 72px header (grid button left, title center, counter+close
+ * grouped right), edge-anchored 20px prev/next buttons with a dark 1px
+ * border and an active:scale press, non-looping navigation (disabled at
+ * the first/last photo), and a per-image fade transition on navigation.
  */
 export function Lightbox({
   photoId,
@@ -27,18 +29,23 @@ export function Lightbox({
   useFocusTrap(dialogRef);
   const index = allPhotos.findIndex((p) => p.id === photoId);
   const photo = allPhotos[index];
+  const isFirst = index <= 0;
+  const isLast = index >= allPhotos.length - 1;
+  const [visible, setVisible] = useState(false);
 
   const goNext = useCallback(() => {
-    const next = allPhotos[(index + 1) % allPhotos.length];
-    onNavigate(next.id);
+    if (index >= allPhotos.length - 1) return;
+    onNavigate(allPhotos[index + 1].id);
   }, [index, onNavigate]);
 
   const goPrev = useCallback(() => {
-    const prev = allPhotos[(index - 1 + allPhotos.length) % allPhotos.length];
-    onNavigate(prev.id);
+    if (index <= 0) return;
+    onNavigate(allPhotos[index - 1].id);
   }, [index, onNavigate]);
 
   useEffect(() => {
+    // mount fade-in, matching the reference's opacity/visibility transition
+    const raf = requestAnimationFrame(() => setVisible(true));
     closeBtnRef.current?.focus();
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -46,7 +53,10 @@ export function Lightbox({
       if (e.key === "ArrowLeft") goPrev();
     }
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("keydown", onKey);
+    };
   }, [onClose, goNext, goPrev]);
 
   if (!photo) return null;
@@ -56,60 +66,72 @@ export function Lightbox({
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
-      aria-label={`Photo ${index + 1} of ${allPhotos.length}: ${photo.alt}`}
-      className="fixed inset-0 z-[60] bg-white flex flex-col"
+      aria-label="Photo viewer"
+      className="fixed inset-0 z-[60] bg-white flex items-center justify-center transition-opacity duration-[250ms] ease-out"
+      style={{ opacity: visible ? 1 : 0 }}
     >
-      <div className="flex items-center justify-between px-6 h-16 shrink-0">
+      <header className="absolute top-0 left-0 right-0 h-[72px] flex items-center px-6 z-[3]">
         <button
-          ref={closeBtnRef}
           type="button"
           onClick={onClose}
-          aria-label="Close photo viewer"
-          className="p-2 rounded-full hover:bg-[var(--color-bg-subtle)]"
+          aria-label="Show all photos"
+          className="-ml-2 w-10 h-10 rounded-full inline-flex items-center justify-center hover:bg-[var(--color-bg-subtle)] transition-colors"
         >
-          <X size={20} />
+          <Grid2x2 size={18} />
         </button>
-        <span className="text-sm text-[var(--color-text-secondary)]" aria-live="polite">
-          {index + 1} / {allPhotos.length}
+
+        <span className="absolute left-1/2 -translate-x-1/2 text-base font-medium">
+          {photo.room}
         </span>
-        <span className="w-9" aria-hidden="true" />
-      </div>
 
-      <div className="flex-1 relative flex items-center justify-center px-4 pb-8">
-        <button
-          type="button"
-          onClick={goPrev}
-          aria-label="Previous photo"
-          className="absolute left-4 md:left-10 z-10 w-10 h-10 rounded-full bg-white border border-[var(--color-border)] shadow-[var(--shadow-elevated)] flex items-center justify-center hover:scale-105 transition-transform"
-        >
-          <ChevronLeft size={20} />
-        </button>
-
-        <div className="relative w-full h-full max-w-4xl">
-          <Image
-            key={photo.id}
-            src={photo.url}
-            alt={photo.alt}
-            fill
-            className="object-contain animate-[fadeIn_150ms_ease-out]"
-            sizes="90vw"
-            priority
-          />
+        <div className="ml-auto flex items-center gap-3">
+          <span className="text-sm text-[var(--color-text-secondary)]" aria-live="polite">
+            {index + 1} / {allPhotos.length}
+          </span>
+          <button
+            ref={closeBtnRef}
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="w-10 h-10 rounded-full inline-flex items-center justify-center hover:bg-[var(--color-bg-subtle)] transition-colors"
+          >
+            <X size={18} />
+          </button>
         </div>
+      </header>
 
-        <button
-          type="button"
-          onClick={goNext}
-          aria-label="Next photo"
-          className="absolute right-4 md:right-10 z-10 w-10 h-10 rounded-full bg-white border border-[var(--color-border)] shadow-[var(--shadow-elevated)] flex items-center justify-center hover:scale-105 transition-transform"
-        >
-          <ChevronRight size={20} />
-        </button>
+      <button
+        type="button"
+        onClick={goPrev}
+        disabled={isFirst}
+        aria-label="Previous"
+        className="absolute top-1/2 -translate-y-1/2 left-5 z-[3] w-10 h-10 rounded-full bg-white border border-[#222] flex items-center justify-center transition-transform hover:bg-[var(--color-bg-subtle)] active:scale-[.92] disabled:opacity-30 disabled:pointer-events-none"
+      >
+        <ChevronLeft size={20} strokeWidth={2.5} />
+      </button>
+
+      <div className="flex items-center justify-center w-full h-full py-[88px] px-24">
+        <Image
+          key={photo.id}
+          src={photo.url}
+          alt={photo.alt}
+          width={1100}
+          height={825}
+          className="w-auto h-auto max-w-[min(1100px,100%)] max-h-full object-contain animate-[fadeIn_300ms_ease]"
+          sizes="1100px"
+          priority
+        />
       </div>
 
-      <p className="text-center text-sm pb-4 text-[var(--color-text-secondary)]">
-        {photo.room}
-      </p>
+      <button
+        type="button"
+        onClick={goNext}
+        disabled={isLast}
+        aria-label="Next"
+        className="absolute top-1/2 -translate-y-1/2 right-5 z-[3] w-10 h-10 rounded-full bg-white border border-[#222] flex items-center justify-center transition-transform hover:bg-[var(--color-bg-subtle)] active:scale-[.92] disabled:opacity-30 disabled:pointer-events-none"
+      >
+        <ChevronRight size={20} strokeWidth={2.5} />
+      </button>
     </div>
   );
 }
