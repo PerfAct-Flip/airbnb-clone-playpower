@@ -166,6 +166,14 @@ long, verbatim where short.
     the bar stays hidden until the exact right point, matching the
     reference's timing, not just its final appearance.
 
+19. **Description truncation, exact CSS shared directly**
+    (`._kfKUOt { max-height: 6.2em; overflow: hidden;
+    mask-image: linear-gradient(#000 62%, transparent); }`). Replaced the
+    hard `line-clamp-3` cutoff with this fade-to-transparent mask effect,
+    and fixed a real behavioral gap at the same time: the "Show more" toggle
+    only expanded and never collapsed back — made it a real two-way toggle
+    ("Show more" / "Show less") with a rotating chevron.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
