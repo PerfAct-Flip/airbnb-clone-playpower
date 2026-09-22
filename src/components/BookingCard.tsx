@@ -41,8 +41,8 @@ export function BookingCard({
       : listing.nights;
 
   return (
-    <div ref={cardRef} className="sticky top-28">
-      <div className="flex items-center gap-3 border border-(--color-border) rounded-2xl px-4 pt-6 pb-4 mb-4">
+    <div ref={cardRef} className="sticky top-30 pt-6">
+      <div className="flex items-center gap-3 border border-(--color-border) rounded-2xl px-4 pb-4 mb-4">
         <Sparkles size={20} className="text-[#2b6b4f] shrink-0" />
         <div className="flex-1 text-sm">
           <span className="font-medium">Get 10% off your next stay.</span>{" "}
