@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { DateRange } from "react-day-picker";
 import { Header } from "@/components/Header";
 import { PhotoGrid } from "@/components/PhotoGrid";
 import { Tabs } from "@/components/Tabs";
@@ -11,6 +12,7 @@ import { Highlights } from "@/components/Highlights";
 import { Description } from "@/components/Description";
 import { SleepingArrangements } from "@/components/SleepingArrangements";
 import { Amenities } from "@/components/Amenities";
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { Reviews } from "@/components/Reviews";
 import { LocationMap } from "@/components/LocationMap";
 import { MeetYourHost } from "@/components/MeetYourHost";
@@ -21,15 +23,21 @@ import { PhotoTour } from "@/components/PhotoTour";
 import { Lightbox } from "@/components/Lightbox";
 import { listing } from "@/lib/listing-data";
 
+const DEFAULT_RANGE: DateRange = {
+  from: new Date(2026, 9, 18),
+  to: new Date(2026, 9, 23),
+};
+
 export default function Home() {
   const [tourOpen, setTourOpen] = useState(false);
   const [lightboxPhotoId, setLightboxPhotoId] = useState<string | null>(null);
+  const [range, setRange] = useState<DateRange | undefined>(DEFAULT_RANGE);
 
   return (
     <>
       <Header />
 
-      <main className="mx-auto max-w-[1280px] px-6 pb-24" id="photos">
+      <main className="mx-auto max-w-7xl px-6 pb-24" id="photos">
         <TitleRow title={listing.title} />
         <PhotoGrid onShowAll={() => setTourOpen(true)} />
         {/* Sentinel the fixed Tabs bar observes — it slides into view once
@@ -49,9 +57,9 @@ export default function Home() {
             the bottom of the page). */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_372px] gap-x-24 gap-y-2 items-stretch">
           <div>
-            <div className="pb-6">
+            <div className="pt-6 pb-6">
               <h2 className="text-xl font-medium">{listing.subtitle}</h2>
-              <p className="text-[15px] text-[var(--color-text-secondary)] mt-1">
+              <p className="text-[15px] text-(--color-text-secondary) mt-1">
                 {listing.guestSummary}
               </p>
             </div>
@@ -67,9 +75,10 @@ export default function Home() {
             <Description />
             <SleepingArrangements />
             <Amenities />
+            <AvailabilityCalendar range={range} onRangeChange={setRange} />
           </div>
           <div>
-            <BookingCard />
+            <BookingCard range={range} onRangeChange={setRange} />
           </div>
         </div>
 

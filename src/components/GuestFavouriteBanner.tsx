@@ -9,23 +9,23 @@ export function GuestFavouriteBanner({
   reviewCount: number;
 }) {
   return (
-    <div className="mt-6 border border-[var(--color-border)] rounded-2xl p-6 flex items-center justify-between">
+    <div className="mt-6 border border-(--color-border) rounded-2xl p-6 flex items-center justify-between">
       <div className="flex items-center gap-1.5">
-        <LaurelLeaf className="h-6 w-auto shrink-0" />
+        <LaurelLeaf className="h-6 w-auto shrink-0 scale-x-[-1]" />
         <p className="font-medium text-sm leading-tight text-center">
           Guest
           <br />
           favourite
         </p>
-        <LaurelLeaf className="h-6 w-auto shrink-0 scale-x-[-1]" />
+        <LaurelLeaf className="h-6 w-auto shrink-0" />
       </div>
-      <div className="h-10 w-px bg-[var(--color-border)] mx-6" />
+      <div className="h-10 w-px bg-(--color-border) mx-6" />
       <div className="flex-1">
-        <p className="text-sm text-[var(--color-text-secondary)] max-w-[280px]">
+        <p className="text-sm text-(--color-text-secondary) max-w-70">
           One of the most loved homes on Airbnb, according to guests
         </p>
       </div>
-      <div className="h-10 w-px bg-[var(--color-border)] mx-6" />
+      <div className="h-10 w-px bg-(--color-border) mx-6" />
       <div className="text-center">
         <p className="text-lg font-semibold">{rating}</p>
         <div className="flex items-center gap-0.5 mt-1" aria-hidden="true">
@@ -34,10 +34,10 @@ export function GuestFavouriteBanner({
           ))}
         </div>
       </div>
-      <div className="h-10 w-px bg-[var(--color-border)] mx-6" />
+      <div className="h-10 w-px bg-(--color-border) mx-6" />
       <div className="text-center">
         <p className="text-lg font-semibold">{reviewCount}</p>
-        <p className="text-sm text-[var(--color-text-secondary)] mt-1">Reviews</p>
+        <p className="text-sm text-(--color-text-secondary) mt-1">Reviews</p>
       </div>
     </div>
   );

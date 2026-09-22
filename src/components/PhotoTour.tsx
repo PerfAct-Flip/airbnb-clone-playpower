@@ -55,7 +55,7 @@ export function PhotoTour({
           structurally, not just visually */}
       <header
         id="tourBar"
-        className="shrink-0 z-[5] h-[88px] flex items-center px-8 bg-white"
+        className="shrink-0 z-5 h-22 flex items-center px-8 bg-white"
       >
         <button
           ref={closeBtnRef}
@@ -77,7 +77,7 @@ export function PhotoTour({
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto max-w-[900px] w-full mx-auto px-6 py-8">
+      <div className="flex-1 overflow-y-auto max-w-225 w-full mx-auto px-6 py-8">
         {/* Thumbnail nav grid — 8 columns, matching the reference's own
             `._tHVclZ { grid-template-columns: repeat(8, 1fr); gap: 12px;
             margin-bottom: 40px; }` exactly, not a guessed 4-column layout */}
@@ -111,12 +111,12 @@ export function PhotoTour({
           <section
             key={section.room}
             id={`tour-${section.room.replace(/\s+/g, "-")}`}
-            className="grid grid-cols-2 gap-y-5 gap-x-[60px] items-start pt-4 pb-1 scroll-mt-24"
+            className="grid grid-cols-2 gap-y-5 gap-x-15 items-start pt-4 pb-1 scroll-mt-24"
           >
             <div>
               <h2 className="text-2xl font-medium">{section.room}</h2>
               {section.tags.length > 0 && (
-                <p className="text-[var(--color-text-secondary)] mt-2">
+                <p className="text-(--color-text-secondary) mt-2">
                   {section.tags.join(" · ")}
                 </p>
               )}
@@ -128,7 +128,7 @@ export function PhotoTour({
                   data-testid="tour-photo"
                   aria-label={`${listing.title} image 1`}
                   onClick={() => onOpenPhoto(section.photos[0].id)}
-                  className="relative block w-full aspect-[4/3] rounded-xl overflow-hidden"
+                  className="relative block w-full aspect-4/3 rounded-xl overflow-hidden"
                 >
                   <Image
                     src={section.photos[0].url}

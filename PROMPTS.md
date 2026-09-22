@@ -258,6 +258,91 @@ long, verbatim where short.
     stars, review count, each separated by a vertical divider). Verified
     with local Playwright screenshots of both spots on our own dev server.
 
+26. **"5 nights in Candolim" availability calendar section, from a
+    screenshot.** User pointed out this section (heading + date range,
+    two-month react-day-picker calendar, a small keyboard-input icon
+    button, "Clear dates" link) was missing entirely between Amenities and
+    Reviews. Built `AvailabilityCalendar`, lifting the date-range state
+    that used to live only inside `BookingCard` up to `page.tsx` so both
+    components share one selection — matching the reference's real
+    behavior where picking dates in either place stays in sync.
+    react-day-picker ships a blue theme by default, so it needed a
+    black/white palette override to match the reference's minimal look.
+    First attempt set `--rdp-range_start-background` /
+    `--rdp-range_end-background` to a flat black, which made the selected
+    endpoints render as squares instead of circles — those two variables
+    are half-transparent gradients in the library's own CSS specifically
+    so the square day *cell* stays transparent on the outward half while
+    the circular *button* underneath shows its rounded corner; flattening
+    them to a solid color made the cell fully opaque and hid the border
+    radius. Fixed by only overriding the button-level color variables and
+    leaving the cell-level gradient variables alone. Verified with local
+    screenshots of our own dev server across both the calendar section and
+    the `BookingCard` popover.
+
+27. **Page width, tried and reverted.** User reported the page taking "90%
+    width, not 100%" — `<main>` was at `max-w-[1280px]` while `Header.tsx`
+    independently used `max-w-[1760px]`, so on wide screens the header
+    spanned edge-to-edge while the body content sat in a narrower centered
+    column. Tried widening `main` (and the fixed `Tabs` bar under it, so
+    tab links stay aligned with the content edge while scrolling) first to
+    match Header's 1760px, then to `max-w-[80%]` per the user's
+    clarification — but the user then asked to revert entirely, so `main`
+    and `Tabs` are back to the original `max-w-[1280px]`, unchanged from
+    before this detour. (While the wider values were in place, `PhotoGrid`
+    appeared to cut off a hero image at certain widths; that turned out to
+    be a symptom of the width experiment itself, not a separate bug, and
+    is moot now that it's reverted.)
+
+28. **Laurel icon swapped for a user-downloaded image.** After step 25's
+    custom SVG redraw, the user downloaded a generic laurel-leaf clipart
+    PNG from an online icon source themselves (`public/leaves.png`) and
+    asked to use that instead, mirroring it for the left side. Different
+    provenance than the reference's own asset — licensed clipart the user
+    sourced independently, not a file copied from the reference site — so
+    `LaurelLeaf` now renders that image directly (`scale-x-[-1]` on one
+    copy) rather than the SVG.
+
+29. **Tailwind v4 canonical-class cleanup.** User pasted a batch of
+    `tailwindcss-intellisense` warnings from their editor's Problems panel
+    (`suggestCanonicalClasses`) across several files — mostly
+    `text-[var(--x)]`-style arbitrary values that Tailwind v4's newer
+    `text-(--x)` variable shorthand covers natively, plus a few numeric
+    arbitrary values with exact spacing-scale equivalents (`h-[110px]` →
+    `h-27.5`, `max-w-[420px]` → `max-w-105`, `leading-[30px]` →
+    `leading-7.5`, `z-[5]` → `z-5`, `h-[88px]` → `h-22`, `max-w-[900px]` →
+    `max-w-225`, `gap-x-[60px]` → `gap-x-15`, `aspect-[4/3]` →
+    `aspect-4/3`, `[scrollbar-width:none]` → `scrollbar-none`). Applied
+    across Header, AvailabilityCalendar, PhotoTour, Reviews, ThingsToKnow,
+    and TitleRow — purely a syntax normalization, no visual change.
+
+30. **Subtitle spacing fix.** User pointed out the gap between the photo
+    grid and the "Entire serviced apartment..." subtitle line was too
+    tight — that block only had `pb-6` (space below it) and nothing above,
+    so it sat flush against the photo grid's bottom edge. Added `pt-6` to
+    match the `mt-6`/`py-*` rhythm used between other sections on the page.
+
+31. **Host card rebuild, exact markup then a screenshot.** User shared the
+    reference's exact HTML for the "Meet your host" info card
+    (`_jdcHSj`/`_ynznJE`/`_IPinhY` etc.) and asked what was missing;
+    comparing it to step 24's screenshot-only build, every piece of text
+    content was already present (name, "Host", review count, rating,
+    years hosting), so nothing was actually missing — but a follow-up
+    screenshot revealed the real *layout* was quite different from our
+    guess: avatar centered and stacked above the name/role (not beside it
+    in a row), and the three stats stacked vertically with horizontal
+    dividers to the right of one vertical divider (not a 3-column grid
+    below the name). Rebuilt the card structure to match the screenshot.
+    Also swapped the checkmark badge icon from lucide's `BadgeCheck` (a
+    scalloped ribbon shape) to a plain `Check` glyph inside our own colored
+    circle, since the reference's SVG path is a plain circle-outline
+    checkmark, not a badge/ribbon — `BadgeCheck` was the wrong generic
+    icon pick, not a provenance issue either way (both are generic lucide
+    icons, not copied paths). The "4.68★" rating also switched from a
+    separate number+icon flex row to inline text with a star glyph,
+    matching how the reference — and our own review cards elsewhere —
+    write it as one string.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BadgeCheck, ShieldCheck, Star } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { listing, coHosts } from "@/lib/listing-data";
 import { Icon } from "@/lib/icon-map";
 
@@ -16,41 +16,45 @@ export function MeetYourHost() {
 
       <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-10">
         <div>
-          <div className="border border-[var(--color-border-light)] rounded-2xl shadow-[var(--shadow-card)] p-6 grid grid-cols-[auto_1fr] gap-6 items-center">
-            <div className="relative w-20 h-20 shrink-0">
-              <div
-                className="w-20 h-20 rounded-full flex items-center justify-center text-white text-xs font-semibold text-center leading-tight p-2"
-                style={{ backgroundColor: "#2b6b4f" }}
-              >
-                MIRASHYA HOMES
+          {/* Rebuilt from the user's screenshot of the reference: avatar
+              stacked above the name (not beside it), stats in a vertical
+              stack with horizontal dividers to the right of a single
+              vertical divider — quite different from our first, screenshot-only
+              guess at this layout. */}
+          <div className="border border-[var(--color-border-light)] rounded-2xl shadow-[var(--shadow-card)] p-6 flex items-stretch">
+            <div className="flex flex-col items-center text-center flex-1 pr-6">
+              <div className="relative w-24 h-24 shrink-0 mb-4">
+                <div
+                  className="w-24 h-24 rounded-full flex items-center justify-center text-white text-xs font-semibold text-center leading-tight p-2"
+                  style={{ backgroundColor: "#2b6b4f" }}
+                >
+                  MIRASHYA HOMES
+                </div>
+                <span className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[var(--color-primary)] border-2 border-white flex items-center justify-center">
+                  <Check size={14} className="text-white" strokeWidth={3} />
+                </span>
               </div>
-              <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[var(--color-primary)] border-2 border-white flex items-center justify-center">
-                <BadgeCheck size={14} className="text-white" />
-              </span>
-            </div>
-            <div>
               <p className="text-xl font-semibold">{listing.host.name}</p>
               <p className="text-sm text-[var(--color-text-secondary)]">Host</p>
             </div>
-          </div>
 
-          <div className="grid grid-cols-3 border-t border-b border-[var(--color-border-light)] mt-6 py-4">
-            <div className="text-center border-r border-[var(--color-border-light)]">
-              <p className="text-lg font-semibold">
-                {listing.host.reviewCount.toLocaleString("en-IN")}
-              </p>
-              <p className="text-xs text-[var(--color-text-secondary)]">Reviews</p>
-            </div>
-            <div className="text-center border-r border-[var(--color-border-light)]">
-              <p className="text-lg font-semibold flex items-center justify-center gap-1">
-                {listing.host.rating}
-                <Star size={12} fill="currentColor" />
-              </p>
-              <p className="text-xs text-[var(--color-text-secondary)]">Rating</p>
-            </div>
-            <div className="text-center">
-              <p className="text-lg font-semibold">{listing.host.yearsHosting}</p>
-              <p className="text-xs text-[var(--color-text-secondary)]">Years hosting</p>
+            <div className="w-px bg-[var(--color-border-light)]" />
+
+            <div className="flex flex-col justify-center pl-6 flex-1">
+              <div className="pb-3">
+                <p className="text-lg font-semibold">
+                  {listing.host.reviewCount.toLocaleString("en-IN")}
+                </p>
+                <p className="text-sm text-[var(--color-text-secondary)]">Reviews</p>
+              </div>
+              <div className="border-t border-[var(--color-border-light)] py-3">
+                <p className="text-lg font-semibold">{listing.host.rating}★</p>
+                <p className="text-sm text-[var(--color-text-secondary)]">Rating</p>
+              </div>
+              <div className="border-t border-[var(--color-border-light)] pt-3">
+                <p className="text-lg font-semibold">{listing.host.yearsHosting}</p>
+                <p className="text-sm text-[var(--color-text-secondary)]">Years hosting</p>
+              </div>
             </div>
           </div>
 

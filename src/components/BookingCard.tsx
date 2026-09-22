@@ -5,19 +5,20 @@ import { DayPicker, type DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { listing } from "@/lib/listing-data";
-
-const DEFAULT_RANGE: DateRange = {
-  from: new Date(2026, 9, 18),
-  to: new Date(2026, 9, 23),
-};
+import { rdpAirbnbTheme } from "@/lib/rdp-theme";
 
 function fmt(date?: Date) {
   if (!date) return "";
   return date.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
 }
 
-export function BookingCard() {
-  const [range, setRange] = useState<DateRange | undefined>(DEFAULT_RANGE);
+export function BookingCard({
+  range,
+  onRangeChange,
+}: {
+  range: DateRange | undefined;
+  onRangeChange: (range: DateRange | undefined) => void;
+}) {
   const [guests, setGuests] = useState(2);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [guestsOpen, setGuestsOpen] = useState(false);
@@ -41,7 +42,7 @@ export function BookingCard() {
 
   return (
     <div ref={cardRef} className="sticky top-28">
-      <div className="flex items-center gap-3 border border-[var(--color-border)] rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-3 border border-(--color-border) rounded-2xl p-4 mb-4">
         <Sparkles size={20} className="text-[#2b6b4f] shrink-0" />
         <div className="flex-1 text-sm">
           <span className="font-medium">Get 10% off your next stay.</span>{" "}
@@ -51,13 +52,13 @@ export function BookingCard() {
         </div>
         <button
           type="button"
-          className="border border-[var(--color-text)] rounded-lg px-4 py-2 text-sm font-medium shrink-0"
+          className="border border-(--color-text) rounded-lg px-4 py-2 text-sm font-medium shrink-0"
         >
           Claim
         </button>
       </div>
 
-      <div className="border border-[var(--color-border)] rounded-2xl p-6 shadow-[var(--shadow-elevated)] relative">
+      <div className="border border-(--color-border) rounded-2xl p-6 shadow-(--shadow-elevated) relative">
         <p className="mb-4">
           <span className="underline text-lg font-semibold">
             ₹{listing.price.toLocaleString("en-IN")}
@@ -65,7 +66,7 @@ export function BookingCard() {
           <span className="text-[15px]">for {nights} nights</span>
         </p>
 
-        <div className="border border-[var(--color-border)] rounded-xl overflow-hidden relative">
+        <div className="border border-(--color-border) rounded-xl overflow-hidden relative">
           <div className="grid grid-cols-2">
             <button
               type="button"
@@ -73,7 +74,7 @@ export function BookingCard() {
                 setCalendarOpen((o) => !o);
                 setGuestsOpen(false);
               }}
-              className="text-left p-3 border-r border-[var(--color-border)] border-b"
+              className="text-left p-3 border-r border-(--color-border) border-b"
             >
               <span className="block text-[10px] font-bold tracking-wide">
                 CHECK-IN
@@ -86,7 +87,7 @@ export function BookingCard() {
                 setCalendarOpen((o) => !o);
                 setGuestsOpen(false);
               }}
-              className="text-left p-3 border-b border-[var(--color-border)]"
+              className="text-left p-3 border-b border-(--color-border)"
             >
               <span className="block text-[10px] font-bold tracking-wide">
                 CHECKOUT
@@ -115,19 +116,21 @@ export function BookingCard() {
           </button>
 
           {calendarOpen && (
-            <div className="absolute z-20 top-full left-0 mt-2 bg-white border border-[var(--color-border)] rounded-2xl shadow-[var(--shadow-elevated)] p-4">
+            <div className="absolute z-20 top-full left-0 mt-2 bg-white border border-(--color-border) rounded-2xl shadow-(--shadow-elevated) p-4">
               <DayPicker
+                style={rdpAirbnbTheme}
                 mode="range"
                 numberOfMonths={2}
+                defaultMonth={range?.from ?? new Date()}
                 selected={range}
-                onSelect={setRange}
+                onSelect={onRangeChange}
                 disabled={{ before: new Date() }}
               />
             </div>
           )}
 
           {guestsOpen && (
-            <div className="absolute z-20 top-full right-0 mt-2 bg-white border border-[var(--color-border)] rounded-2xl shadow-[var(--shadow-elevated)] p-4 w-64">
+            <div className="absolute z-20 top-full right-0 mt-2 bg-white border border-(--color-border) rounded-2xl shadow-(--shadow-elevated) p-4 w-64">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Guests</span>
                 <div className="flex items-center gap-3">
@@ -135,7 +138,7 @@ export function BookingCard() {
                     type="button"
                     aria-label="Decrease guests"
                     onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                    className="w-7 h-7 rounded-full border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30"
+                    className="w-7 h-7 rounded-full border border-(--color-border) flex items-center justify-center disabled:opacity-30"
                     disabled={guests <= 1}
                   >
                     −
@@ -145,7 +148,7 @@ export function BookingCard() {
                     type="button"
                     aria-label="Increase guests"
                     onClick={() => setGuests((g) => Math.min(8, g + 1))}
-                    className="w-7 h-7 rounded-full border border-[var(--color-border)] flex items-center justify-center disabled:opacity-30"
+                    className="w-7 h-7 rounded-full border border-(--color-border) flex items-center justify-center disabled:opacity-30"
                     disabled={guests >= 8}
                   >
                     +
@@ -157,7 +160,7 @@ export function BookingCard() {
         </div>
 
         {range?.from && range?.to && (
-          <p className="text-xs text-[var(--color-bg-subtle)] bg-[var(--color-bg-subtle)] text-[var(--color-text)] rounded-md px-3 py-2 mt-3 text-center">
+          <p className="text-xs text-(--color-bg-subtle) bg-(--color-bg-subtle) rounded-md px-3 py-2 mt-3 text-center">
             Free cancellation before{" "}
             <strong>
               {range.from.toLocaleDateString("en-US", { day: "numeric", month: "long" })}
@@ -172,13 +175,13 @@ export function BookingCard() {
         >
           Reserve
         </button>
-        <p className="text-center text-sm text-[var(--color-text-secondary)] mt-3">
+        <p className="text-center text-sm text-(--color-text-secondary) mt-3">
           You won&apos;t be charged yet
         </p>
       </div>
 
       <div className="text-center mt-4">
-        <a href="#" className="text-sm underline underline-offset-2 text-[var(--color-text-secondary)]">
+        <a href="#" className="text-sm underline underline-offset-2 text-(--color-text-secondary)">
           Report this listing
         </a>
       </div>

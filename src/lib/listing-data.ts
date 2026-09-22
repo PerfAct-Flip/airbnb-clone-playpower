@@ -19,6 +19,7 @@ export const listing = {
   title: "Romantic Jacuzzi 1BHK Candolim | Mirashya UG10",
   subtitle: "Entire serviced apartment in Candolim, India",
   guestSummary: "3 guests · 1 bedroom · 1 bed · 1 bathroom",
+  city: "Candolim",
   neighbourhoodBlurb:
     "Located in the heart of Candolim, Amor de Goa offers a peaceful stay " +
     "with easy access to beaches, cafés, and popular attractions.",

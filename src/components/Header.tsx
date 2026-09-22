@@ -5,11 +5,11 @@ import { Search, Menu, CircleUserRound, Globe } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="relative z-50 bg-white border-b border-[var(--color-border-light)]">
+    <header className="relative z-50 bg-white border-b border-(--color-border-light)">
       <div className="mx-auto max-w-[1760px] px-6 lg:px-20 h-20 flex items-center justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 text-[var(--color-primary)] font-bold text-2xl"
+          className="flex items-center gap-2 text-(--color-primary) font-bold text-2xl"
           aria-label="Airbnb home"
         >
           <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
@@ -20,16 +20,16 @@ export function Header() {
 
         <button
           type="button"
-          className="flex items-center border border-[var(--color-border)] rounded-full shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow h-12 text-sm"
+          className="flex items-center border border-(--color-border) rounded-full shadow-(--shadow-card) hover:shadow-(--shadow-elevated) transition-shadow h-12 text-sm"
         >
-          <span className="px-5 font-medium">Anywhere</span>
-          <span className="h-6 w-px bg-[var(--color-border)]" />
-          <span className="px-5 font-medium">Anytime</span>
-          <span className="h-6 w-px bg-[var(--color-border)]" />
-          <span className="pl-5 pr-2 text-[var(--color-text-secondary)]">
+          <span className="px-5 font-bold">Anywhere</span>
+          <span className="h-6 w-px bg-(--color-border)" />
+          <span className="px-5 font-bold">Anytime</span>
+          <span className="h-6 w-px bg-(--color-border)" />
+          <span className="pl-5 pr-2 text-(--color-text-secondary)">
             Add guests
           </span>
-          <span className="w-8 h-8 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center mr-2">
+          <span className="w-8 h-8 rounded-full bg-(--color-primary) text-white flex items-center justify-center mr-2">
             <Search size={16} strokeWidth={3} />
           </span>
         </button>
@@ -37,24 +37,24 @@ export function Header() {
         <div className="flex items-center gap-4">
           <a
             href="#"
-            className="hidden md:inline text-sm font-medium rounded-full px-3 py-2 hover:bg-[var(--color-bg-subtle)]"
+            className="hidden md:inline text-sm font-bold rounded-full px-3 py-2 hover:bg-(--color-bg-subtle)"
           >
             Become a host
           </a>
           <button
             type="button"
             aria-label="Choose a language and region"
-            className="p-2 rounded-full hover:bg-[var(--color-bg-subtle)]"
+            className="p-2 rounded-full hover:bg-(--color-bg-subtle)"
           >
             <Globe size={18} />
           </button>
           <button
             type="button"
             aria-label="Main menu"
-            className="flex items-center gap-3 border border-[var(--color-border)] rounded-full pl-3 pr-2 py-2 hover:shadow-[var(--shadow-card)]"
+            className="flex items-center gap-3 border border-(--color-border) rounded-full pl-3 pr-2 py-2 hover:shadow-(--shadow-card)"
           >
             <Menu size={16} />
-            <CircleUserRound size={26} className="text-[var(--color-text-secondary)]" />
+            <CircleUserRound size={26} className="text-(--color-text-secondary)" />
           </button>
         </div>
       </div>
