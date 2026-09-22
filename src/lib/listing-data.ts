@@ -356,7 +356,19 @@ export const roomSections: RoomSection[] = [
   },
   {
     room: "Full kitchen",
-    tags: ["Kitchen", "Refrigerator", "Cooking basics"],
+    tags: [
+      "Freezer",
+      "Fridge",
+      "Blender",
+      "Cooker",
+      "Cooking basics",
+      "Kettle",
+      "Microwave",
+      "Toaster",
+      "Wine glasses",
+      "Coffee",
+      "Crockery and cutlery",
+    ],
     photos: [
       {
         id: "fk-0",
@@ -407,19 +419,19 @@ export const roomSections: RoomSection[] = [
   },
   {
     room: "Full bathroom",
-    tags: ["Hot tub", "Bathtub"],
+    tags: ["Hairdryer", "Hot water", "Shampoo", "Shower gel"],
     photos: [
       {
         id: "bath-0",
-        url: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=1200&q=80",
-        alt: "Jacuzzi bathroom",
+        url: "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1200&q=80",
+        alt: "Modern bathroom with walk-in shower",
         room: "Full bathroom",
       },
     ],
   },
   {
     room: "Gym",
-    tags: ["Exercise equipment"],
+    tags: ["Air conditioning", "Gym", "Exercise equipment", "Ceiling fan"],
     photos: [
       {
         id: "gym-0",
@@ -443,7 +455,7 @@ export const roomSections: RoomSection[] = [
   },
   {
     room: "Pool",
-    tags: ["Shared pool"],
+    tags: ["Pool"],
     photos: [
       {
         id: "pool-0",

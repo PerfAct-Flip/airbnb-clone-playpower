@@ -91,6 +91,21 @@ long, verbatim where short.
     silently falling back to the wrong default because their icon-map keys were
     never registered.
 
+14. **Second screencast, focused on the Photo Tour**: the developer recorded
+    themselves scrolling through the reference's Photo Tour room-by-room. Reviewed
+    it frame-by-frame and cross-checked against `ref.html`. Two outcomes: confirmed
+    the tour's scroll behavior (thumbnail nav is *not* sticky — an earlier hunch
+    was wrong, it was just normal grid-scroll timing) needed no change, but found
+    three room's amenity tags were wrong or too sparse (Full kitchen was missing
+    8 of 11 real items; Full bathroom had the wrong tags entirely — "Hot tub,
+    Bathtub" instead of "Hairdryer, Hot water, Shampoo, Shower gel"; Gym was
+    missing 3 of 4). Also noticed the reference's own live images are broken for
+    several rooms (alt-text placeholders, not photos) — not something to
+    replicate, since a working image is strictly better fidelity than a
+    reproduced bug. While fixing this, caught one more of its own mismatches:
+    the "Full bathroom" room was using a pool/cabana stock photo instead of an
+    actual bathroom, and swapped it for one that matches the room label.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
