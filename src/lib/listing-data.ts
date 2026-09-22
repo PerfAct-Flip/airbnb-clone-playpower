@@ -19,6 +19,9 @@ export const listing = {
   title: "Romantic Jacuzzi 1BHK Candolim | Mirashya UG10",
   subtitle: "Entire serviced apartment in Candolim, India",
   guestSummary: "3 guests · 1 bedroom · 1 bed · 1 bathroom",
+  neighbourhoodBlurb:
+    "Located in the heart of Candolim, Amor de Goa offers a peaceful stay " +
+    "with easy access to beaches, cafés, and popular attractions.",
   price: 28499,
   nights: 5,
   rating: 4.95,
@@ -27,6 +30,14 @@ export const listing = {
   host: {
     name: "Mirashya Homes",
     yearsHosting: 2,
+    reviewCount: 1463,
+    rating: 4.68,
+    bio: [
+      { icon: "cake", text: "Born in the 80s" },
+      { icon: "school", text: "Where I went to school: NICMAR GOA" },
+    ],
+    responseRate: "100%",
+    responseTime: "within an hour",
   },
   description:
     "Plan Your Relaxing Holiday at Amor De Goa by Mirashya Homes! Stay in this cozy " +
@@ -481,3 +492,45 @@ export const roomSections: RoomSection[] = [
 
 // Flat list, in tour order, used by the Lightbox for prev/next navigation.
 export const allPhotos: Photo[] = roomSections.flatMap((s) => s.photos);
+
+export type CoHost = {
+  name: string;
+  photoUrl?: string;
+  initial: string;
+  initialColor?: string;
+};
+
+export const coHosts: CoHost[] = [
+  {
+    name: "Sharath",
+    photoUrl: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&q=80",
+    initial: "S",
+  },
+  {
+    name: "Aman Dev Pahwa",
+    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80",
+    initial: "A",
+  },
+  {
+    name: "Maria Karen Priyanka",
+    photoUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80",
+    initial: "M",
+  },
+  {
+    name: "Simran",
+    photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
+    initial: "S",
+  },
+  {
+    name: "Pallavi",
+    photoUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80",
+    initial: "P",
+  },
+  {
+    name: "Sanyukta",
+    photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&q=80",
+    initial: "S",
+  },
+  { name: "Shruti", initial: "S", initialColor: "#f4a4b8" },
+  { name: "Amisha", initial: "A", initialColor: "#a8c5e8" },
+];

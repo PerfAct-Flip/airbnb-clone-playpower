@@ -31,6 +31,8 @@ import {
   DoorClosed,
   Tv,
   Snowflake,
+  Cake,
+  GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -56,6 +58,8 @@ export const iconMap: Record<string, LucideIcon> = {
   camera: Video,
   co: AlertTriangle,
   smoke: FlameKindling,
+  cake: Cake,
+  school: GraduationCap,
 };
 
 export function Icon({

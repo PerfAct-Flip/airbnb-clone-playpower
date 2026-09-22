@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { listing } from "@/lib/listing-data";
+import { ShowMoreButton } from "@/components/ShowMoreButton";
 
 export function Description() {
   const [expanded, setExpanded] = useState(false);
@@ -23,20 +24,11 @@ export function Description() {
       >
         {listing.description}
       </p>
-      <button
-        type="button"
+      <ShowMoreButton
+        expanded={expanded}
         onClick={() => setExpanded((e) => !e)}
-        aria-expanded={expanded}
-        className="flex items-center gap-1 text-sm font-medium underline underline-offset-2 mt-2"
-      >
-        {expanded ? "Show less" : "Show more"}
-        <span
-          aria-hidden="true"
-          className={`inline-block transition-transform ${expanded ? "rotate-90" : ""}`}
-        >
-          ›
-        </span>
-      </button>
+        className="mt-3.5"
+      />
     </div>
   );
 }

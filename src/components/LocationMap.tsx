@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { Search, Plus, Minus, Home } from "lucide-react";
+import { listing } from "@/lib/listing-data";
+import { ShowMoreButton } from "@/components/ShowMoreButton";
 
 /**
  * Stylized placeholder map matching the reference's schematic look
@@ -9,6 +12,8 @@ import { Search, Plus, Minus, Home } from "lucide-react";
  * and wiring a real Maps API key isn't warranted for this exercise.
  */
 export function LocationMap() {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <div className="py-10">
       <h2 className="text-[26px] leading-[30px] font-medium mb-1">Where you&apos;ll be</h2>
@@ -84,9 +89,31 @@ export function LocationMap() {
           </button>
         </div>
       </div>
-      <p className="text-sm text-[var(--color-text-secondary)] mt-3">
-        Exact location will be provided after booking
+      <p className="text-sm text-[var(--color-text)] mt-[18px]">
+        Exact location will be provided after booking.
       </p>
+
+      <h3 className="text-lg font-medium mt-10 mb-3">Neighbourhood highlights</h3>
+      <p
+        className="text-[15px] leading-normal"
+        style={
+          expanded
+            ? undefined
+            : {
+                maxHeight: "3.2em",
+                overflow: "hidden",
+                WebkitMaskImage: "linear-gradient(#000 62%, transparent)",
+                maskImage: "linear-gradient(#000 62%, transparent)",
+              }
+        }
+      >
+        {listing.neighbourhoodBlurb}
+      </p>
+      <ShowMoreButton
+        expanded={expanded}
+        onClick={() => setExpanded((e) => !e)}
+        className="mt-[18px]"
+      />
     </div>
   );
 }

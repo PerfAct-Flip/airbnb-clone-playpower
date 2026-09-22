@@ -213,6 +213,31 @@ long, verbatim where short.
     7-way columns and a label-icon-value stack are our own reasonable
     engineering call, not a copied value.
 
+23. **Shared "Show more" button + Neighbourhood highlights, exact CSS shared
+    directly** (`._yWwrkC` button markup/styles). Extracted a standalone
+    `ShowMoreButton` component (label + rotating chevron, underline text
+    style) used by both the Description section and a new "Neighbourhood
+    highlights" block added to Location — the reference reuses the same
+    button in both places, confirmed by the shared class name. The
+    neighbourhood paragraph uses the same `mask-image` fade-truncation
+    technique as Description (step 19) rather than `line-clamp`, collapsed
+    to ~2 lines by default.
+
+24. **"Meet your host" section, built from a screenshot only.** User shared
+    a screenshot of this section (host card with avatar/badge, review
+    count/rating/years-hosting stats, host bio facts, a co-hosts grid,
+    response-rate/response-time details, "Message host" button, and a
+    payment-safety note) with no accompanying markup or CSS. Built the
+    whole section from that image alone. Worth noting explicitly: several
+    class names in the disallowed GitHub stylesheet from the earlier
+    incident (step 20, entry since removed per instruction) were
+    recognizable as describing this same section — but no values from that
+    dump were used here; every measurement below is our own reasonable read
+    of the screenshot, not a copied one. Verified visually with a local
+    Playwright screenshot of our own dev server (not the reference) scrolled
+    to this section, compared side-by-side against the user's reference
+    screenshot; also confirmed clean `tsc`, `eslint`, and `next build`.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
