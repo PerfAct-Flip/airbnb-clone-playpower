@@ -1,5 +1,5 @@
 import { Icon } from "@/lib/icon-map";
-import { listing } from "@/lib/listing-data";
+import { listing, reviewTags, reviews } from "@/lib/listing-data";
 
 export function Reviews() {
   return (
@@ -58,6 +58,51 @@ export function Reviews() {
           ))}
         </div>
       </div>
+
+      <div className="flex gap-3 overflow-x-auto mt-8 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {reviewTags.map((tag) => (
+          <button
+            key={tag.label}
+            type="button"
+            className="shrink-0 flex items-center gap-1.5 border border-[var(--color-border)] rounded-full px-3.5 py-2 text-sm hover:border-[var(--color-text)] transition-colors"
+          >
+            {tag.label} <span className="text-[var(--color-text-secondary)]">{tag.count}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-8">
+        {reviews.map((review) => (
+          <div key={review.id}>
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium shrink-0"
+                style={{ backgroundColor: "#c1852a" }}
+                aria-hidden="true"
+              >
+                {review.initial}
+              </div>
+              <div>
+                <p className="text-sm font-medium">{review.name}</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">{review.tenure}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 mt-2 text-xs text-[var(--color-text-secondary)]">
+              <span aria-hidden="true">★★★★★</span>
+              <span>·</span>
+              <span>{review.date}</span>
+            </div>
+            <p className="text-sm mt-2 leading-6">{review.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        className="mt-8 border border-[var(--color-text)] rounded-lg px-5 py-3 text-sm font-medium hover:bg-[var(--color-bg-subtle)]"
+      >
+        Show all {listing.reviewCount} reviews
+      </button>
     </div>
   );
 }

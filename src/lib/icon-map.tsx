@@ -15,6 +15,10 @@ import {
   Tag,
   Dumbbell,
   Building2,
+  PawPrint,
+  Video,
+  AlertTriangle,
+  FlameKindling,
   type LucideIcon,
 } from "lucide-react";
 
@@ -36,6 +40,10 @@ export const iconMap: Record<string, LucideIcon> = {
   tag: Tag,
   gym: Dumbbell,
   exterior: Building2,
+  pets: PawPrint,
+  camera: Video,
+  co: AlertTriangle,
+  smoke: FlameKindling,
 };
 
 export function Icon({

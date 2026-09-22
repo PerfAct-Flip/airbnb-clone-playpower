@@ -75,6 +75,22 @@ long, verbatim where short.
     `.claude/agents/accessibility-code-auditor.md`, formalizing the exact review
     process used manually in steps 7 and 9 into reusable Claude Code subagents.
 
+13. **Screen recording review**: the developer shared a short screencast of
+    themselves scrolling the reference site, which surfaced several entire sections
+    that had been missed by the earlier screenshot-based pass: a subtitle line
+    (property type + guest/bed/bath counts), a listing description with a
+    "Show more" toggle, an individual reviews list with filterable tags, a
+    "Things to know" section (cancellation/house rules/safety), and a "More stays
+    nearby" carousel. Went back to `ref.html` (already legitimately in hand from
+    step 10) to pull the exact copy, DOM structure, and category groupings for each
+    — e.g. discovering the Amenities section is a categorized **modal** triggered
+    by "Show all 50 amenities", not the inline expand-in-place list originally
+    built, and that two amenities (Carbon monoxide alarm, Smoke alarm) are shown
+    struck through inline as unavailable rather than hidden. Also caught two of its
+    own bugs while implementing: a typo'd Unsplash URL, and two amenity icons
+    silently falling back to the wrong default because their icon-map keys were
+    never registered.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

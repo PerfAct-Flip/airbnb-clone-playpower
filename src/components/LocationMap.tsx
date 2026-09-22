@@ -84,6 +84,9 @@ export function LocationMap() {
           </button>
         </div>
       </div>
+      <p className="text-sm text-[var(--color-text-secondary)] mt-3">
+        Exact location will be provided after booking
+      </p>
     </div>
   );
 }
