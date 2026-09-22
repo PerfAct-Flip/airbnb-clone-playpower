@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowLeft, Share, Heart } from "lucide-react";
-import { roomSections } from "@/lib/listing-data";
+import { listing, roomSections } from "@/lib/listing-data";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 
 export function PhotoTour({
@@ -76,35 +76,40 @@ export function PhotoTour({
       </div>
 
       <div className="max-w-[900px] mx-auto px-6 py-8">
-        {/* Thumbnail nav grid */}
-        <div className="grid grid-cols-4 gap-4 mb-16">
+        {/* Thumbnail nav grid — 8 columns, matching the reference's own
+            `._tHVclZ { grid-template-columns: repeat(8, 1fr); gap: 12px;
+            margin-bottom: 40px; }` exactly, not a guessed 4-column layout */}
+        <nav aria-label="Photo categories" className="grid grid-cols-8 gap-3 mb-10">
           {roomSections.map((section) => (
             <button
               type="button"
               key={section.room}
+              aria-label={section.room}
               onClick={() => scrollToRoom(section.room)}
               className="text-left group"
             >
               <div className="relative aspect-square rounded-xl overflow-hidden">
                 <Image
                   src={section.photos[0].url}
-                  alt={section.photos[0].alt}
+                  alt=""
                   fill
                   className="object-cover group-hover:brightness-90 transition-[filter]"
-                  sizes="200px"
+                  sizes="120px"
                 />
               </div>
-              <p className="text-sm mt-2">{section.room}</p>
+              <span className="block text-sm mt-2 leading-snug">{section.room}</span>
             </button>
           ))}
-        </div>
+        </nav>
 
-        {/* Room sections */}
+        {/* Room sections — grid spec (gap: 20px 60px, items-start, padding:
+            16px 0 4px) copied exactly from the reference's own `._AWcqip`
+            rule, not guessed */}
         {roomSections.map((section) => (
           <section
             key={section.room}
             id={`tour-${section.room.replace(/\s+/g, "-")}`}
-            className="grid grid-cols-2 gap-8 mb-16 scroll-mt-24"
+            className="grid grid-cols-2 gap-y-5 gap-x-[60px] items-start pt-4 pb-1 scroll-mt-24"
           >
             <div>
               <h2 className="text-2xl font-medium">{section.room}</h2>
@@ -114,26 +119,46 @@ export function PhotoTour({
                 </p>
               )}
             </div>
-            <div className="space-y-4">
-              {section.photos.map((photo, i) => (
+            <div className="flex flex-col gap-4">
+              {section.photos[0] && (
                 <button
                   type="button"
-                  key={photo.id}
                   data-testid="tour-photo"
-                  onClick={() => onOpenPhoto(photo.id)}
-                  className={`relative block w-full rounded-xl overflow-hidden ${
-                    i === 0 ? "aspect-[4/3]" : "aspect-video"
-                  }`}
+                  aria-label={`${listing.title} image 1`}
+                  onClick={() => onOpenPhoto(section.photos[0].id)}
+                  className="relative block w-full aspect-[4/3] rounded-xl overflow-hidden"
                 >
                   <Image
-                    src={photo.url}
-                    alt={photo.alt}
+                    src={section.photos[0].url}
+                    alt={section.room}
                     fill
                     className="object-cover hover:brightness-90 transition-[filter]"
                     sizes="450px"
                   />
                 </button>
-              ))}
+              )}
+              {section.photos.length > 1 && (
+                <div className="grid grid-cols-2 gap-4">
+                  {section.photos.slice(1).map((photo, i) => (
+                    <button
+                      type="button"
+                      key={photo.id}
+                      data-testid="tour-photo"
+                      aria-label={`${listing.title} image ${i + 2}`}
+                      onClick={() => onOpenPhoto(photo.id)}
+                      className="relative block w-full aspect-square rounded-xl overflow-hidden"
+                    >
+                      <Image
+                        src={photo.url}
+                        alt={section.room}
+                        fill
+                        className="object-cover hover:brightness-90 transition-[filter]"
+                        sizes="220px"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         ))}

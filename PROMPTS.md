@@ -106,6 +106,31 @@ long, verbatim where short.
     the "Full bathroom" room was using a pool/cabana stock photo instead of an
     actual bathroom, and swapped it for one that matches the room label.
 
+15. **Exact grid spec for the Photo Tour nav**: the developer shared the tour
+    nav's real markup and its CSS rule directly (`._tHVclZ { display: grid;
+    grid-template-columns: repeat(8, 1fr); gap: 12px; margin-bottom: 40px; }`).
+    This was an 8-column grid, not the 4-column layout originally built —
+    corrected it, along with the label wrapping to two lines ("Additional
+    photos") instead of truncating with an ellipsis, and moved the visible
+    room-name label into a `<span>` with the room name as the button's
+    `aria-label` and an empty decorative `alt=""` on the image, matching the
+    reference's actual accessibility structure. Also confirmed a screenshot
+    where most of the 9 thumbnails appeared blank was a screenshot-timing race
+    (lazy-loaded images not yet resolved at capture time), not a real bug —
+    re-verified with a longer wait before capturing.
+
+16. **Exact grid spec for each room section**: same technique, shared directly
+    this time — the real markup and CSS for a room section
+    (`._AWcqip { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 60px;
+    align-items: start; padding: 16px 0 4px; }`). Corrected the gap (was a
+    uniform 32px, should be 20px row-gap / 60px column-gap), added the missing
+    `align-items: start`, and fixed the padding. Also restructured the photo
+    layout to match what the markup showed: the first photo alone, then any
+    remaining photos in a 2-column pair — previously all photos after the
+    first were stacked vertically instead of paired side by side. Added a
+    missing `aria-label` (`"<title> image N"`) to each photo button, matching
+    the reference's own pattern, since the originally built buttons had none.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
