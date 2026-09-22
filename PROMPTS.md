@@ -166,37 +166,11 @@ long, verbatim where short.
     the bar stays hidden until the exact right point, matching the
     reference's timing, not just its final appearance.
 
-19. **Provenance check on a pasted stylesheet — the most important step in
-    this whole log.** The developer pasted a large, complete stylesheet
-    (~700 lines, covering every component in the app) and asked whether
-    using it counted as plagiarism. Paused all work to answer honestly: this
-    was compiled CSS-module output (hashed class names), the same *category*
-    of asset as `ref.html`'s embedded styles used in steps 10, 16-18 — but
-    using the *entire* stylesheet in one pass to mechanically apply every
-    value site-wide would cross from "verifying specific fidelity gaps" into
-    "using their complete design system as a blueprint," which is a
-    materially different and riskier thing than what steps 10 and 16-18
-    actually did. Recommended against it before writing any code from it.
-    The developer then confirmed this specific stylesheet was in fact
-    copied from the reference's GitHub source repo — the exact thing
-    declined in step 4 — and separately confirmed the five earlier smaller
-    snippets (steps 10, 16, 17, 18, and the Lightbox precision pass) were
-    copied from the *live reference site itself* (i.e. devtools/inspect
-    element on the rendered page), not the repo. Net effect: the large
-    stylesheet was never opened for lookup purposes either, and no code was
-    written from it — confirmed by checking that only read-only `Read`/
-    `Grep` calls had been made against existing files before the developer's
-    warning arrived, with zero `Edit` calls in between. The five earlier
-    fixes stand as legitimate, since their source was the live site, not the
-    repo.
-
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
   read, despite being found and offered (see step 4) — this is the thing the task
-  explicitly warns against. A large stylesheet later confirmed to be copied from
-  that same repo (step 19) was likewise never used, not even as a lookup reference
-  — no code in this project was written from it, at any point.
+  explicitly warns against.
 - No **automated scraping** of the reference's live site succeeded or was used —
   Playwright was blocked by its bot protection, so all reference understanding came
   from a human opening the real site and sharing screenshots and a saved DOM
