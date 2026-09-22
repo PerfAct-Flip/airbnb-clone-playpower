@@ -1,30 +1,34 @@
 import { Icon } from "@/lib/icon-map";
+import { LaurelLeaf } from "@/components/LaurelLeaf";
 import { listing, reviewTags, reviews } from "@/lib/listing-data";
 
 export function Reviews() {
   return (
     <div className="py-10 border-b border-[var(--color-border-light)]" id="reviews">
-      <div className="text-center max-w-[420px] mx-auto">
-        <div className="flex items-center justify-center gap-3">
-          <span aria-hidden="true" className="text-3xl -rotate-12">
-            🍃
+      <div className="text-center">
+        {/* Exact CSS shared directly from the reference (`._IPHKNm img { height: 110px }`,
+            `._acYbbH { font-size: 100px; font-weight: 500; letter-spacing: -.03em }`).
+            The laurel artwork itself is our own SVG, not the reference's PNG asset. */}
+        <div className="flex items-center justify-center">
+          <LaurelLeaf className="h-[110px] w-auto shrink-0" />
+          <span className="text-[100px] font-medium tracking-[-0.03em] leading-none mx-1">
+            {listing.rating}
           </span>
-          <span className="text-6xl font-semibold">{listing.rating}</span>
-          <span aria-hidden="true" className="text-3xl rotate-12 scale-x-[-1]">
-            🍃
-          </span>
+          <LaurelLeaf className="h-[110px] w-auto shrink-0 scale-x-[-1]" />
         </div>
-        <p className="font-medium mt-4">Guest favourite</p>
-        <p className="text-sm text-[var(--color-text-secondary)] mt-2">
-          This home is a guest favourite based on ratings, reviews and
-          reliability
-        </p>
-        <a
-          href="#"
-          className="text-sm underline underline-offset-2 font-medium mt-2 inline-block"
-        >
-          How reviews work
-        </a>
+        <div className="max-w-[420px] mx-auto">
+          <p className="font-medium mt-4">Guest favourite</p>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-2">
+            This home is a guest favourite based on ratings, reviews and
+            reliability
+          </p>
+          <a
+            href="#"
+            className="text-sm underline underline-offset-2 font-medium mt-2 inline-block"
+          >
+            How reviews work
+          </a>
+        </div>
       </div>
 
       {/* Each column's spacing/border matches the reference's real

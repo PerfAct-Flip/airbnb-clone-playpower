@@ -238,6 +238,26 @@ long, verbatim where short.
     to this section, compared side-by-side against the user's reference
     screenshot; also confirmed clean `tsc`, `eslint`, and `next build`.
 
+25. **Laurel-leaf artwork, exact CSS shared directly** (`._IPHKNm img {
+    height: 110px }`, `._acYbbH { font-size: 100px; font-weight: 500;
+    letter-spacing: -.03em }`, markup `<img laurel-left><div>4.95</div><img
+    laurel-right>`). The reference's actual leaf icon is two PNG files on
+    its own asset host — using those files directly would be exactly the
+    "lift and shift" the task warns against, so instead of hotlinking or
+    recreating them pixel-for-pixel, built a small custom SVG (`LaurelLeaf`)
+    that approximates the same silhouette (a curved stack of leaves ending
+    in a hooked stem, each leaf split into a light/dark half for a faceted
+    look) as our own artwork. Used the exact shared sizing/typography values
+    for the big rating hero at the top of Reviews (replacing the earlier
+    honest-gap 🍃 emoji placeholder), and reused the same component at
+    small size in the "Guest favourite" banner near the top of the page
+    after the user pointed out (via a screenshot) that the reference reuses
+    the identical leaf icon there too, flanking the "Guest favourite" label
+    instead of a rating number. Rebuilt that banner's internal layout to
+    match the screenshot (label+leaves, description, rating with 5 filled
+    stars, review count, each separated by a vertical divider). Verified
+    with local Playwright screenshots of both spots on our own dev server.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
