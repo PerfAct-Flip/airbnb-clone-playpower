@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { listing } from "@/lib/listing-data";
 
@@ -11,8 +11,30 @@ const TABS = [
   { id: "location", label: "Location" },
 ];
 
+/**
+ * Matches the reference's real `_JXzroy` behavior: this bar is
+ * `position: fixed; top: 0` at all times, not `position: sticky` — by
+ * default it's translated off-screen and invisible
+ * (`transform: translateY(-100%); opacity: 0; pointer-events: none`), then
+ * slides down into view once a scroll-triggered class is added
+ * (`transform: translateY(0); opacity: 1`, `transition: transform .25s ease,
+ * opacity .25s ease`). The trigger here is an IntersectionObserver on a
+ * sentinel placed right after the photo grid, not a raw scrollY check.
+ */
 export function Tabs() {
   const [active, setActive] = useState("photos");
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const sentinel = document.getElementById("photo-section-end");
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(!entry.isIntersecting),
+      { rootMargin: "-1px 0px 0px 0px" }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
 
   function handleClick(id: string) {
     setActive(id);
@@ -24,9 +46,14 @@ export function Tabs() {
   return (
     <nav
       aria-label="Listing sections"
-      className="sticky top-20 z-30 bg-white border-b border-[var(--color-border-light)]"
+      aria-hidden={!visible}
+      className={`fixed inset-x-0 top-0 z-[45] bg-white border-b border-[var(--color-border-light)] transition-[transform,opacity] duration-[250ms] ease-out ${
+        visible
+          ? "translate-y-0 opacity-100 pointer-events-auto"
+          : "-translate-y-full opacity-0 pointer-events-none"
+      }`}
     >
-      <div className="flex items-center justify-between">
+      <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between">
         <ul className="flex gap-8">
           {TABS.map((tab) => (
             <li key={tab.id}>

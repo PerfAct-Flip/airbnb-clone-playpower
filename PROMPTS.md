@@ -147,6 +147,25 @@ long, verbatim where short.
     already established for the Lightbox, instead of a slightly different
     ad-hoc size.
 
+18. **Real scroll-reveal behavior for the tabs bar**: flagged that the main
+    Header didn't match the reference's scroll behavior, backed by the real
+    markup for the fixed tabs+price+Reserve bar. Checked the actual CSS for
+    both: the main header (`_Ugwssa`) is `position: relative` — not sticky at
+    all, it scrolls away normally — while the tabs bar (`_JXzroy`) is
+    `position: fixed; top: 0` *at all times*, hidden by default via
+    `transform: translateY(-100%); opacity: 0; pointer-events: none`, then
+    slides into view when a scroll-triggered class is added
+    (`transition: transform .25s ease, opacity .25s ease`). This was a
+    materially different mechanism from what had been built (a
+    `position: sticky` header stacked with a `position: sticky` tabs bar
+    below it) — not just a styling tweak. Rebuilt accordingly: Header is now
+    non-sticky, and Tabs is a fixed bar driven by an IntersectionObserver on
+    a sentinel placed right after the photo grid, toggling the same
+    transform/opacity/pointer-events pattern. Verified with a three-step
+    scroll test (top / partway through the photos / past them) confirming
+    the bar stays hidden until the exact right point, matching the
+    reference's timing, not just its final appearance.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

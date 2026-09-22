@@ -30,6 +30,11 @@ export default function Home() {
 
       <main className="mx-auto max-w-[1280px] px-6 pb-24" id="photos">
         <PhotoGrid onShowAll={() => setTourOpen(true)} />
+        {/* Sentinel the fixed Tabs bar observes — it slides into view once
+            this scrolls out of the viewport, matching the reference's real
+            scroll-triggered reveal (see Tabs.tsx) rather than a naive
+            scrollY threshold. */}
+        <div id="photo-section-end" aria-hidden="true" />
         <TitleRow title={listing.title} />
 
         <Tabs />

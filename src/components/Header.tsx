@@ -5,7 +5,7 @@ import { Search, Menu, CircleUserRound, Globe } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[var(--color-border-light)]">
+    <header className="relative z-50 bg-white border-b border-[var(--color-border-light)]">
       <div className="mx-auto max-w-[1760px] px-6 lg:px-20 h-20 flex items-center justify-between">
         <Link
           href="/"
