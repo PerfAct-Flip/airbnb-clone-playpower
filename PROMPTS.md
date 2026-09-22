@@ -343,6 +343,14 @@ long, verbatim where short.
     matching how the reference — and our own review cards elsewhere —
     write it as one string.
 
+32. **Discount banner top padding.** User pointed out a missing gap near
+    the "Get 10% off your next stay" card in the booking sidebar; after
+    checking both desktop and mobile widths without finding the described
+    gap missing, asked for clarification and the user specified it directly:
+    more top padding inside that card, above the "Get 10% off" text.
+    Changed its uniform `p-4` to `pt-6` on top with `p-4` kept on the other
+    sides.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or
