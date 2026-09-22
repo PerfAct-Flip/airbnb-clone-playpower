@@ -351,6 +351,14 @@ long, verbatim where short.
     Changed its uniform `p-4` to `pt-6` on top with `p-4` kept on the other
     sides.
 
+33. **Invisible-text bug fix.** While reviewing the user's own follow-up
+    edits to `BookingCard.tsx` (top padding + centering tweaks to the
+    discount banner), noticed the "Free cancellation before..." text had
+    `text-(--color-bg-subtle) bg-(--color-bg-subtle)` — text and background
+    set to the same light-gray variable, making the text invisible.
+    Flagged it instead of silently fixing it; user confirmed, restored the
+    text color to `--color-text`.
+
 ## What was deliberately *not* done
 
 - The reference site's actual **source code** (the GitHub repo) was never opened or

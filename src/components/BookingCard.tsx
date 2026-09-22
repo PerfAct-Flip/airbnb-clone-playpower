@@ -160,7 +160,7 @@ export function BookingCard({
         </div>
 
         {range?.from && range?.to && (
-          <p className="text-xs text-(--color-bg-subtle) bg-(--color-bg-subtle) rounded-md px-3 py-2 mt-3 text-center">
+          <p className="text-xs text-(--color-text) bg-(--color-bg-subtle) rounded-md px-3 py-2 mt-3 text-center">
             Free cancellation before{" "}
             <strong>
               {range.from.toLocaleDateString("en-US", { day: "numeric", month: "long" })}
