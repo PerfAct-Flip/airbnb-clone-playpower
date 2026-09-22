@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Airbnb Listing Page Clone
 
-## Getting Started
+Take-home submission: a pixel-fidelity clone of an Airbnb-style listing page, its
+Photo Tour, and its Lightbox — built with Next.js 16, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Running it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) (or whichever port Next.js picks
+if 3000 is busy). Desktop only, per the task spec — no mobile layout was built.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What's here
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/page.tsx` — the listing page, composed from `src/components/*`
+- `src/lib/listing-data.ts` — mock listing content (data kept separate from
+  presentation, see the accessibility-code-auditor sub-agent config for why)
+- `src/components/PhotoTour.tsx`, `src/components/Lightbox.tsx` — the two overlay
+  views
+- `architecture/diagram.html` + `architecture/architecture-diagram.png` — the
+  production-scale architecture diagram (rendered via `node architecture/render.mjs`)
+- `.claude/agents/` — two real Claude Code sub-agent configs used during
+  development: `visual-fidelity-reviewer` and `accessibility-code-auditor`
+- `PROMPTS.md` — the actual sequence of prompts/decisions used to build this
+- `reference-capture/shot.mjs` — a small Playwright helper used throughout
+  development to screenshot the local build for self-comparison against reference
+  screenshots (see `PROMPTS.md` for why the *reference* site itself couldn't be
+  captured this way — its bot protection blocks headless browsers)
 
-## Learn More
+## Known limitations / honest gaps
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Listing photos are licensed Unsplash stock images, not the reference's real
+  photos — layout and behavior are what's being matched, not photo content.
+- Location tab uses a stylized placeholder map (matching the reference's own
+  non-interactive mock), not a real map tiles provider — no API key wiring was
+  warranted for this exercise.
+- No backend — listing data is static/mocked in `listing-data.ts`, per the task's
+  "backend is optional" note.

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vacation Rental Marketplace — Production Architecture</title>
+<style>
+  :root {
+    --border: #d0d5dd;
+    --text: #1a1f29;
+    --text-secondary: #667085;
+    --client: #e8f0fe;
+    --edge: #fef3e6;
+    --gateway: #f3e8fe;
+    --service: #e6f4ea;
+    --data: #fde8e8;
+    --infra: #eef1f5;
+    --accent: #ff385c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    background: #ffffff;
+    width: 1520px;
+  }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .subtitle { color: var(--text-secondary); font-size: 14px; margin: 0 0 28px; }
+  .layer {
+    margin-bottom: 22px;
+  }
+  .layer-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+  .box {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .box strong { display: block; font-size: 13.5px; margin-bottom: 3px; }
+  .box .note { color: var(--text-secondary); font-size: 11.5px; }
+  .client { background: var(--client); }
+  .edge { background: var(--edge); }
+  .gateway { background: var(--gateway); }
+  .service { background: var(--service); }
+  .data { background: var(--data); }
+  .infra { background: var(--infra); }
+  .arrow-down {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin: 4px 0;
+  }
+  .flow-note {
+    background: #fff8f0;
+    border: 1px dashed #e8a33d;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #7a5416;
+    margin-top: 6px;
+  }
+  .legend {
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  .legend strong { color: var(--text); }
+</style>
+</head>
+<body>
+  <h1>Vacation Rental Marketplace — Production-Scale Architecture</h1>
+  <p class="subtitle">Scaling strategy for frontend, backend, storage, search, and deployment</p>
+
+  <div class="layer">
+    <div class="layer-label">Clients</div>
+    <div class="row">
+      <div class="box client">
+        <strong>Web (Next.js)</strong>
+        SSR for SEO-critical listing pages, ISR (revalidate on price/availability change) so listing pages don't hit origin on every request
+      </div>
+      <div class="box client">
+        <strong>Mobile apps (iOS / Android)</strong>
+        Talk to the same public API layer as web — no separate mobile-only backend
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down">&#8595;</div>
+
+  <div class="layer">
+    <div class="layer-label">Edge / CDN</div>
+    <div class="row">
+      <div class="box edge">
+        <strong>CDN (static assets + images)</strong>
+        Listing photos served resized/optimized at the edge; scales reads horizontally without touching origin storage
+      </div>
+      <div class="box edge">
+        <strong>Edge cache for listing pages</strong>
+        Cached HTML for anonymous browsing (the overwhelming majority of traffic); cache key includes locale/currency, invalidated on listing update
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down">&#8595;</div>
+
+  <div class="layer">
+    <div class="layer-label">API Gateway</div>
+    <div class="row">
+      <div class="box gateway">
+        <strong>Gateway / BFF</strong>
+        Auth (JWT verification), per-IP and per-user rate limiting, request routing to services below — the single scaling bottleneck to watch, so it's stateless and scaled horizontally behind a load balancer independent of the services it fronts
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down">&#8595;</div>
+
+  <div class="layer">
+    <div class="layer-label">Core Services (independently deployed and scaled)</div>
+    <div class="row">
+      <div class="box service"><strong>Listings</strong>CRUD, availability calendar<div class="note">Scales with read replicas — read-heavy, write-light</div></div>
+      <div class="box service"><strong>Search</strong>Geo + text + filters<div class="note">Scales as an Elasticsearch cluster, sharded by region</div></div>
+      <div class="box service"><strong>Booking</strong>Reservation + date-hold logic<div class="note">The concurrency-critical service — see flow note below</div></div>
+      <div class="box service"><strong>Pricing</strong>Dynamic pricing, fees<div class="note">Stateless, scales trivially behind the gateway</div></div>
+      <div class="box service"><strong>Payments</strong>Stripe/provider integration<div class="note">Isolated service to keep PCI scope small</div></div>
+    </div>
+    <div class="row" style="margin-top:12px;">
+      <div class="box service"><strong>Reviews</strong>Post-stay ratings<div class="note">Read-heavy, cached aggressively per listing</div></div>
+      <div class="box service"><strong>Messaging / Notifications</strong>Host&#8596;guest chat, transactional email<div class="note">WebSocket-based chat; async email/SMS via queue workers</div></div>
+      <div class="box service"><strong>Identity</strong>Auth, host/guest profiles<div class="note">Single source of truth for user identity across services</div></div>
+    </div>
+    <div class="flow-note">
+      <strong>Booking concurrency:</strong> the same problem as a seat-booking system —
+      two guests must never book the same listing for overlapping dates. The Booking
+      service holds a short-lived reservation (row-level lock or an optimistic
+      <em>version</em> column on the availability row) before confirming payment, so a
+      double-booking fails fast with a clear conflict instead of corrupting state.
+    </div>
+  </div>
+
+  <div class="arrow-down">&#8595;</div>
+
+  <div class="layer">
+    <div class="layer-label">Data &amp; Messaging</div>
+    <div class="row">
+      <div class="box data"><strong>PostgreSQL</strong>Source of truth<div class="note">Sharded by region at extreme scale; read replicas per service that needs them</div></div>
+      <div class="box data"><strong>Redis</strong>Cache, sessions, rate limits<div class="note">Hot availability lookups and search-result caching live here, not in Postgres</div></div>
+      <div class="box data"><strong>Elasticsearch</strong>Search index<div class="note">Never dual-written from app code — kept in sync via CDC below</div></div>
+      <div class="box data"><strong>Object storage (S3-compatible)</strong>Listing photos, documents<div class="note">Origin behind the CDN layer above</div></div>
+      <div class="box data"><strong>Event bus (Kafka/SQS)</strong>Async backbone<div class="note">Booking confirmations, notification jobs, analytics events</div></div>
+    </div>
+    <div class="flow-note">
+      <strong>Search sync:</strong> a CDC pipeline (e.g. Debezium) streams Postgres
+      listing/availability changes onto the event bus, which a consumer applies to
+      Elasticsearch. This avoids the classic dual-write bug where a listing update
+      succeeds in Postgres but silently fails to reach the search index.
+    </div>
+  </div>
+
+  <div class="arrow-down">&#8595;</div>
+
+  <div class="layer">
+    <div class="layer-label">Deployment &amp; Operations</div>
+    <div class="row">
+      <div class="box infra"><strong>Kubernetes, multi-region</strong>Each service autoscales independently on its own load signal (Booking on request latency, Search on query volume, etc.)</div>
+      <div class="box infra"><strong>CI/CD</strong>Per-service pipelines; canary or blue/green rollout so a bad Booking-service deploy doesn't take down Search</div>
+      <div class="box infra"><strong>Observability</strong>Prometheus metrics + OpenTelemetry distributed tracing across all services, so one slow booking request can be traced end-to-end from gateway through to Postgres</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <strong>Why this shape:</strong> the two things that actually break at scale for a
+    marketplace like this are (1) search falling out of sync with the source of truth,
+    and (2) double-booking under concurrent demand for the same dates — both are called
+    out explicitly above with their specific mitigation, rather than left implicit in a
+    generic "microservices + database" box diagram.
+  </div>
+</body>
+</html>
